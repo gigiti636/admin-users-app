@@ -1,0 +1,51 @@
+{
+  "name": "admin_users",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "tsc && vite build",
+    "lint": "eslint ./src --max-warnings=0",
+    "format": "prettier --write \"src/**/*.{ts,tsx,json,js,jsx}\"",
+    "format_check": "prettier --check \"src/**/*.{ts,tsx,json,js,jsx}\"",
+    "preview": "vite preview --host"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.1.1",
+    "@types/node": "^20.3.2",
+    "axios": "^1.4.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.11",
+    "react-hook-form": "^7.46.2",
+    "styled-components": "^6.1.1",
+    "typescript": "5.0.4",
+    "vite": "^4.3.9",
+    "yup": "1.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.37",
+    "@types/react-dom": "^18.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/parser": "^5.60.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "eslint": "^8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.3.4",
+    "pre-commit": "^1.2.2",
+    "prettier": "^2.8.8"
+  },
+  "pre-commit": [
+    "format_check",
+    "lint"
+  ],
+  "resolutions": {
+    "styled-components": "^6"
+  }
+}
