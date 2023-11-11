@@ -21,6 +21,8 @@ export enum ActionTypes {
   CLEAR_ERROR = 'CLEAR_ERROR',
   // eslint-disable-next-line no-unused-vars
   SET_ERROR = 'SET_ERROR',
+  // eslint-disable-next-line no-unused-vars
+  SET_UPDATING_USER = 'SET_UPDATING_USER',
 }
 export interface InitializeUsersAction {
   type: ActionTypes.INITIALIZE_USERS;
@@ -37,8 +39,12 @@ export interface SetErrorAction {
   type: ActionTypes.SET_ERROR;
   payload: string;
 }
+export interface SetUpdatingUser {
+  type: ActionTypes.SET_UPDATING_USER;
+  payload: boolean;
+}
 
-type Action = InitializeUsersAction | ClearErrorAction | SetErrorAction | UpdateUserAction;
+type Action = InitializeUsersAction | ClearErrorAction | SetErrorAction | UpdateUserAction | SetUpdatingUser;
 
 export const reducer: Reducer<ReducerState, Action> = (state = InitialState, action) => {
   switch (action.type) {
@@ -63,6 +69,11 @@ export const reducer: Reducer<ReducerState, Action> = (state = InitialState, act
       return {
         ...state,
         users: updatedUsers,
+      };
+    case ActionTypes.SET_UPDATING_USER:
+      return {
+        ...state,
+        usersUpdating: action.payload,
       };
     case ActionTypes.SET_ERROR:
       return {

@@ -42,7 +42,7 @@ const UserItemWrapper = sc.div<{ selected: boolean }>`
   transition: background-color 0.3s ease-in;
   cursor: pointer;
   min-height: 80px;
-  background-color:  ${(props) => (props.selected ? `${props.theme.colors.secondaryMain}` : 'transparent')};
+  background-color:  ${(props) => (props.selected ? `${props.theme.colors.secondaryDark}` : 'transparent')};
   &:hover {
     background-color:  ${(props) => props.theme.colors.primary};
   }

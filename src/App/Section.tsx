@@ -35,7 +35,7 @@ const SaveButton = sc.button<{ isdirty: 'yes' | 'no' }>`
 `;
 
 const CancelButton = sc.button`
-  background-color: ${(props) => props.theme.colors.secondaryLight};
+  background-color: ${(props) => props.theme.colors.secondaryMain};
   color: ${(props) => props.theme.text.main};;
   padding: 10px 15px;
   border: none;
@@ -46,7 +46,7 @@ const CancelButton = sc.button`
   font-size: 16px;
   margin-right: 12px;
   &:active {
-      background-color: ${(props) => props.theme.colors.secondaryMain};
+      background-color: ${(props) => props.theme.colors.secondaryDark};
   }
 `;
 const BtnWrapper = sc.div`
@@ -82,7 +82,7 @@ export const Section = ({ user, handleUpdate }: SectionProps) => {
       ...prevState,
       [for_key]: {
         ...prevState[for_key],
-        value: value.trim(),
+        value: value,
         message: prevState[for_key]?.validator ? prevState[for_key].validator!(value) : '',
       },
     }));
@@ -164,7 +164,6 @@ export const Section = ({ user, handleUpdate }: SectionProps) => {
           onChange={(event) => handleInputChange(event.target.value, 'name')}
         />
         <MemoizedInput
-          required
           label={'Email'}
           placeholder={'Enter Email'}
           value={formState.email.value}

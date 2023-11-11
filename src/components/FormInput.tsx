@@ -18,14 +18,22 @@ const Container = sc.div`
 const Input = sc.input<{ has_error: 'yes' | 'no' }>`
   width: 100%;
   border: ${(props) =>
-    props.has_error === 'yes' ? `1px solid red` : `1 px solid ${props.theme.colors.secondaryDark}`};
+    props.has_error === 'yes' ? `1px solid red` : `1px solid ${props.theme.colors.secondaryLight}`};
   height: 40px;
   box-sizing: border-box;
   font-size: 1.1rem;
   padding-left: 8px;
   padding-right: 8px;
+  color:   ${(props) => `${props.theme.text.main}`};
   &::placeholder {
     color: grey;
+  }
+  &:focus-within {
+    outline-color: ${(props) => `${props.theme.colors.secondaryDark}`};
+     box-shadow: ${(props) =>
+       props.has_error === 'yes'
+         ? `0px 0px 2px 1px ${props.theme.colors.secondaryLight}`
+         : `0px 0px 2px 1px #72a0ea`};
   }
 `;
 

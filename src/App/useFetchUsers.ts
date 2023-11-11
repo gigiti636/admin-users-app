@@ -1,19 +1,21 @@
 import { useState, useEffect, useCallback } from 'react';
 import api from '@/api';
 import { UserModel } from './types';
+import { updateLocalStorage, getLocalStorage } from '@/util/localStorage';
 
 interface useFetchUsersProps {
   cacheDurationSeconds?: number;
   onData?: (_data: UserModel[]) => void;
 }
 
-const cacheKey = 'cachedUsers';
+export const cacheKey = 'cachedUsers';
 
 interface FetchUsersResult {
   users: UserModel[];
   loading: boolean;
   error: string | null;
   invalidateCache: () => void;
+  updateCache: (_data: UserModel[]) => void;
 }
 
 const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}): FetchUsersResult => {
@@ -27,18 +29,17 @@ const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}
       setLoading(true);
 
       if (cacheDurationSeconds) {
-        const cachedData = localStorage.getItem(cacheKey);
-        const cacheTimestamp = localStorage.getItem(`${cacheKey}_timestamp`);
+        const cachedData = getLocalStorage<UserModel[]>(cacheKey, []);
+        const cacheTimestamp = getLocalStorage<string>(`${cacheKey}_timestamp`, '');
 
         if (cachedData && cacheTimestamp) {
           const currentTime = new Date().getTime();
           const cacheTime = new Date(parseInt(cacheTimestamp)).getTime();
 
           if (currentTime - cacheTime < cacheDurationSeconds * 1000) {
-            const data = JSON.parse(cachedData);
-            setUsers(data);
+            setUsers(cachedData);
             if (onData) {
-              onData(data);
+              onData(cachedData);
             }
             setLoading(false);
             return;
@@ -55,8 +56,8 @@ const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}
       }
 
       if (cacheDurationSeconds) {
-        localStorage.setItem(cacheKey, JSON.stringify(data));
-        localStorage.setItem(`${cacheKey}_timestamp`, new Date().getTime().toString());
+        updateLocalStorage(cacheKey, data);
+        updateLocalStorage(`${cacheKey}_timestamp`, new Date().getTime().toString());
       }
     } catch (error) {
       setError('Error fetching users');
@@ -73,11 +74,15 @@ const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}
     fetchUsers();
   }, [fetchUsers]);
 
+  const updateCache = useCallback((data: UserModel[]) => {
+    updateLocalStorage(cacheKey, data);
+  }, []);
+
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
 
-  return { users, loading, error, invalidateCache };
+  return { users, loading, error, invalidateCache, updateCache };
 };
 
 export default useFetchUsers;

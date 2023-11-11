@@ -3,9 +3,9 @@ import { createGlobalStyle } from 'styled-components';
 interface Theme {
   colors: {
     primary: string;
-    secondaryLight: string;
     secondaryMain: string;
     secondaryDark: string;
+    secondaryLight: string;
   };
   background: {
     paper: string;
@@ -26,20 +26,20 @@ interface Theme {
 const theme: Theme = {
   colors: {
     primary: '#1b68b3',
-    secondaryLight: '#f7f7f7',
-    secondaryMain: '#e8e8e8',
-    secondaryDark: '#ececec',
+    secondaryLight: '#ececec',
+    secondaryMain: '#f7f7f7',
+    secondaryDark: '#e8e8e8',
   },
   background: {
     paper: '#fcfcfc',
   },
   boxShadow: {
-    light: '0px 0px 10px 6px #cbc8c8',
+    light: '0px 0px 2px 5px #cbc8c8',
     basic: '0px 0px 10px 5px #cbc8c8',
     thick: '0 0 6px 8px #c8c3c3',
   },
   text: {
-    main: '#131313',
+    main: '#5b5555',
     secondary: '#928d8d',
     disabled: '#eaeaea',
   },

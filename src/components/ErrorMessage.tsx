@@ -1,4 +1,5 @@
 import sc from 'styled-components';
+import { useEffect } from 'react';
 
 const CenteredErrorContainer = sc.div`
   color: white;
@@ -21,6 +22,16 @@ interface ErrorMessageProps {
 }
 
 const ErrorMessage = ({ error, handlerClear }: ErrorMessageProps) => {
+  useEffect(() => {
+    if (error) {
+      const timeoutId = setTimeout(() => {
+        handlerClear();
+      }, 3000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [error, handlerClear]);
+
   return error ? (
     <CenteredErrorContainer onClick={handlerClear}>
       <strong>Error :</strong> <span>{error}</span>
