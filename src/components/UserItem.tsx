@@ -2,7 +2,7 @@ import { Avatar } from '@/components/Avatar';
 import { UserModel } from '@/App/types';
 import sc from 'styled-components';
 import { breakpoints } from '@/theme/breakpoints';
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 
 const AvatarWrapper = sc.div`
   padding: 10px 5px 10px 5px;
@@ -61,10 +61,6 @@ export const MemoizedItem = memo(function UserItem({
   isSelected = false,
   clickHandler,
 }: UserItemProps) {
-  useEffect(() => {
-    console.log('rendered');
-  }, [isSelected]);
-
   return (
     <UserItemWrapper onClick={() => clickHandler(user.id)} selected={isSelected} title={user.name}>
       <AvatarWrapper>

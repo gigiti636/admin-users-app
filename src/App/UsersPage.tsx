@@ -5,6 +5,8 @@ import { Section, CallToActionMessage } from './Section';
 import ErrorComponent from '@/components/ErrorComponent';
 import useFetchUsers from '@/App/useFetchUsers';
 import { reducer, InitialState, ActionTypes } from './usersReducer';
+import { UserModel } from '@/App/types';
+import api from '@/api';
 
 const App = () => {
   const [idSelected, setIdSelected] = useState<string>('');
@@ -33,6 +35,17 @@ const App = () => {
     invalidateCache();
   }, [invalidateCache]);
 
+  const selected_user = state.users.find((user) => user.id === idSelected);
+
+  const UpdateUser = async (payload: Partial<UserModel>) => {
+    const { id, ...rest } = payload;
+
+    const { status } = await api.put(`/users/${id}`, rest);
+    if (status && status < 300) {
+      await dispatch({ type: ActionTypes.UPDATE_USER, payload: payload });
+    }
+  };
+
   return (
     <AppPage>
       <List
@@ -41,8 +54,8 @@ const App = () => {
         selectedID={idSelected}
         selectionHandler={(id) => setIdSelected(id)}
       />
-      {idSelected.length > 0 ? (
-        <Section user={state.users.find((user) => user.id === idSelected)!} />
+      {idSelected.length > 0 && selected_user ? (
+        <Section user={selected_user} handleUpdate={UpdateUser} />
       ) : (
         <CallToActionMessage />
       )}

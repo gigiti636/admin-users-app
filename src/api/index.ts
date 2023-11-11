@@ -103,6 +103,6 @@ class ApiClient {
     });
   }
 }
-const Index = new ApiClient();
+const API = new ApiClient();
 
-export default Index;
+export default API;

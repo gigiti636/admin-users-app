@@ -1,9 +1,12 @@
 import type { InputHTMLAttributes } from 'react';
 import sc from 'styled-components';
+import { memo } from 'react';
 
 interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   placeholder?: string;
+  error_message?: string;
+  has_error?: boolean;
 }
 
 const Container = sc.div`
@@ -12,10 +15,11 @@ const Container = sc.div`
   width: 100%;
 `;
 
-const Input = sc.input`
+const Input = sc.input<{ has_error: 'yes' | 'no' }>`
   width: 100%;
-  border: 1px solid #ececec;
-  height: 33px;
+  border: ${(props) =>
+    props.has_error === 'yes' ? `1px solid red` : `1 px solid ${props.theme.colors.secondaryDark}`};
+  height: 40px;
   box-sizing: border-box;
   font-size: 1.1rem;
   padding-left: 8px;
@@ -29,10 +33,24 @@ const Label = sc.label`
   color: grey;
   font-size: 0.95rem;
 `;
+const ErrorMessage = sc.small`
+  color: red;
+  font-size: 0.8rem;
+  margin-bottom: 0;
+`;
 
-export const FormInput = ({ label, placeholder, ...rest }: FormInputProps) => (
-  <Container>
-    <Label>{label}:</Label>
-    <Input type="text" placeholder={placeholder} {...rest} />
-  </Container>
-);
+export const MemoizedInput = memo(function FormInput({
+  label,
+  placeholder,
+  error_message,
+  has_error = false,
+  ...rest
+}: FormInputProps) {
+  return (
+    <Container>
+      <Label>{label}:</Label>
+      <Input type="text" placeholder={placeholder} {...rest} has_error={has_error ? 'yes' : 'no'} />
+      {has_error && <ErrorMessage>{error_message}</ErrorMessage>}
+    </Container>
+  );
+});
