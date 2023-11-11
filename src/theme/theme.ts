@@ -7,21 +7,43 @@ interface Theme {
     secondaryMain: string;
     secondaryDark: string;
   };
-  fonts: {
-    body: string;
+  background: {
+    paper: string;
   };
+  boxShadow: {
+    light: string;
+    basic: string;
+    thick: string;
+  };
+  text: {
+    main: string;
+    secondary: string;
+    disabled: string;
+  };
+  mode: string;
 }
 
 const theme: Theme = {
   colors: {
-    primary: '#1b68b3', //user selected , Save btn
-    secondaryLight: '#ececec',
+    primary: '#1b68b3',
+    secondaryLight: '#f7f7f7',
     secondaryMain: '#e8e8e8',
-    secondaryDark: '#f7f7f7',
+    secondaryDark: '#ececec',
   },
-  fonts: {
-    body: 'Roboto, sans-serif',
+  background: {
+    paper: '#fcfcfc',
   },
+  boxShadow: {
+    light: '0px 0px 10px 6px #cbc8c8',
+    basic: '0px 0px 10px 5px #cbc8c8',
+    thick: '0 0 6px 8px #c8c3c3',
+  },
+  text: {
+    main: '#131313',
+    secondary: '#928d8d',
+    disabled: '#eaeaea',
+  },
+  mode: 'light',
 };
 
 export const GlobalStyle = createGlobalStyle`
