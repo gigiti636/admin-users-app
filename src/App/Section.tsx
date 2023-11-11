@@ -2,19 +2,6 @@ import sc from 'styled-components';
 import { UserForm } from '@/components/UserForm';
 import type { UserModel } from '@/App/types';
 
-interface SectionProps {
-  selectedID: string;
-  user: UserModel;
-}
-
-export const Section = ({ selectedID, user }: SectionProps) => {
-  return (
-    <SectionWrapper>
-      {selectedID.length === 0 ? <Message>Select a user from the list</Message> : <UserForm user={user} />}
-    </SectionWrapper>
-  );
-};
-
 const SectionWrapper = sc.div`
     width: 100%;
     height: 100%;
@@ -26,3 +13,22 @@ const SectionWrapper = sc.div`
 const Message = sc.span`
  color: ${(props) => props.theme.text.secondary};
 `;
+
+interface SectionProps {
+  user: UserModel;
+}
+export const Section = ({ user }: SectionProps) => {
+  return (
+    <SectionWrapper>
+      <UserForm user={user} />
+    </SectionWrapper>
+  );
+};
+
+export const CallToActionMessage = () => {
+  return (
+    <SectionWrapper>
+      <Message>Select a user from the list</Message>
+    </SectionWrapper>
+  );
+};

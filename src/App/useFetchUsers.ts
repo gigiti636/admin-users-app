@@ -4,7 +4,7 @@ import { UserModel } from './types';
 
 interface useFetchUsersProps {
   cacheDurationSeconds?: number;
-  onData?: () => void;
+  onData?: (_data: UserModel[]) => void;
 }
 
 const cacheKey = 'cachedUsers';
@@ -14,7 +14,6 @@ interface FetchUsersResult {
   loading: boolean;
   error: string | null;
   invalidateCache: () => void;
-  clearError: () => void;
 }
 
 const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}): FetchUsersResult => {
@@ -36,7 +35,11 @@ const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}
           const cacheTime = new Date(parseInt(cacheTimestamp)).getTime();
 
           if (currentTime - cacheTime < cacheDurationSeconds * 1000) {
-            setUsers(JSON.parse(cachedData));
+            const data = JSON.parse(cachedData);
+            setUsers(data);
+            if (onData) {
+              onData(data);
+            }
             setLoading(false);
             return;
           }
@@ -44,15 +47,16 @@ const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}
       }
 
       const { data } = await api.get<UserModel[]>('/users');
-      if (data) setUsers(data);
+      if (data) {
+        setUsers(data);
+        if (onData) {
+          onData(data);
+        }
+      }
 
       if (cacheDurationSeconds) {
         localStorage.setItem(cacheKey, JSON.stringify(data));
         localStorage.setItem(`${cacheKey}_timestamp`, new Date().getTime().toString());
-      }
-
-      if (onData) {
-        onData();
       }
     } catch (error) {
       setError('Error fetching users');
@@ -69,15 +73,11 @@ const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}
     fetchUsers();
   }, [fetchUsers]);
 
-  const clearError = useCallback(() => {
-    setError('');
-  }, [fetchUsers]);
-
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
 
-  return { users, loading, error, invalidateCache, clearError };
+  return { users, loading, error, invalidateCache };
 };
 
 export default useFetchUsers;

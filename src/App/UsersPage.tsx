@@ -1,35 +1,52 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 import { AppPage } from '@/components/Layout';
 import { List } from './List';
-import { Section } from './Section';
+import { Section, CallToActionMessage } from './Section';
 import ErrorComponent from '@/components/ErrorComponent';
 import useFetchUsers from '@/App/useFetchUsers';
+import { reducer, InitialState, ActionTypes } from './usersReducer';
 
 const App = () => {
   const [idSelected, setIdSelected] = useState<string>('');
-  const { users, loading, error, invalidateCache, clearError } = useFetchUsers({
+
+  const { loading, error, invalidateCache } = useFetchUsers({
     cacheDurationSeconds: 60,
-    onData: () => {
-      console.log('New data fetched!');
+    onData: (data) => {
+      dispatch({
+        type: ActionTypes.INITIALIZE_USERS,
+        payload: data,
+      });
     },
   });
 
+  const [state, dispatch] = useReducer(reducer, InitialState);
+  console.log(state);
+
+  const ResetError = useCallback(() => {
+    dispatch({ type: ActionTypes.CLEAR_ERROR });
+  }, []);
+  useEffect(() => {
+    if (error) dispatch({ type: ActionTypes.SET_ERROR, payload: error });
+  }, [error]);
+
   useEffect(() => {
     invalidateCache();
-  }, []);
-
-  console.log(users, loading, error);
+  }, [invalidateCache]);
 
   return (
     <AppPage>
       <List
         loading={loading}
-        users={users}
+        users={state.users ?? []}
         selectedID={idSelected}
         selectionHandler={(id) => setIdSelected(id)}
       />
-      <Section selectedID={idSelected} user={users.find((user) => user.id === idSelected)!} />
-      {error && !loading && <ErrorComponent error={error} handlerClear={clearError} />}
+      {idSelected.length > 0 ? (
+        <Section user={state.users.find((user) => user.id === idSelected)!} />
+      ) : (
+        <CallToActionMessage />
+      )}
+      {state.error && !loading && <ErrorComponent error={state.error} handlerClear={ResetError} />}
     </AppPage>
   );
 };
