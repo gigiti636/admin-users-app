@@ -1,6 +1,6 @@
 import sc from 'styled-components';
 import type { UserModel } from '@/App/types';
-import { validateEmail, validateName, validatePhone } from '@/App/types';
+import { validateEmail, validateName, validatePhone } from './validators';
 import { MemoizedInput } from '@/components/FormInput';
 import { SyntheticEvent, useEffect } from 'react';
 import { useForm } from '@/util/useFormValidation';

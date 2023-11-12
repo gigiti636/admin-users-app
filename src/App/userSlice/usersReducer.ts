@@ -14,7 +14,7 @@ export const InitialState: ReducerState = {
 
 export enum ActionTypes {
   // eslint-disable-next-line no-unused-vars
-  INITIALIZE_USERS = 'INITIALIZE_USERS',
+  SET_USERS = 'SET_USERS',
   // eslint-disable-next-line no-unused-vars
   UPDATE_USER = 'UPDATE_USER',
   // eslint-disable-next-line no-unused-vars
@@ -25,7 +25,7 @@ export enum ActionTypes {
   SET_UPDATING_USER = 'SET_UPDATING_USER',
 }
 export interface InitializeUsersAction {
-  type: ActionTypes.INITIALIZE_USERS;
+  type: ActionTypes.SET_USERS;
   payload: UserModel[];
 }
 export interface UpdateUserAction {
@@ -48,7 +48,7 @@ type Action = InitializeUsersAction | ClearErrorAction | SetErrorAction | Update
 
 export const reducer: Reducer<ReducerState, Action> = (state = InitialState, action) => {
   switch (action.type) {
-    case ActionTypes.INITIALIZE_USERS:
+    case ActionTypes.SET_USERS:
       return {
         ...state,
         users: action.payload,

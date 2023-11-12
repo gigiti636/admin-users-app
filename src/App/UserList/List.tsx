@@ -1,7 +1,7 @@
 import sc from 'styled-components';
 import { breakpoints } from '@/theme/breakpoints';
 import { UserModel } from '@/App/types';
-import { LoadingList } from '@/components/LoadingList';
+import { LoadingList } from '@/App/UserList/LoadingList';
 import { MemoizedItem } from '@/components/UserItem';
 
 interface UserListProps {

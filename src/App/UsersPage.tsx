@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useReducer, useState } from 'react';
 
-import { List } from './List';
-import { Section, CallToActionMessage } from './Section';
+import { List } from './UserList/List';
+import { Section, CallToActionMessage } from './UserSection/Section';
 
 import { AppPage } from '@/components/Layout';
 import ErrorMessage from '@/components/ErrorMessage';
 import Loader from '@/components/Loader';
 
-import useFetchUsers from './useFetchUsers';
-import { reducer, InitialState, ActionTypes } from './usersReducer';
+import useFetchUsers from './userSlice/useFetchUsers';
+import { reducer, InitialState, ActionTypes } from './userSlice/usersReducer';
 import { UserModel } from './types';
 
 import api from '@/api';
@@ -16,11 +16,11 @@ import api from '@/api';
 const App = () => {
   const [idSelected, setIdSelected] = useState<string>('');
 
-  const { loading, error, invalidateCache, updateCache } = useFetchUsers({
-    cacheDurationSeconds: 600,
+  const { loading, error, refetch, updateCache } = useFetchUsers({
+    cacheDurationSeconds: 60,
     onData: (data) => {
       dispatch({
-        type: ActionTypes.INITIALIZE_USERS,
+        type: ActionTypes.SET_USERS,
         payload: data,
       });
     },
@@ -36,14 +36,13 @@ const App = () => {
   }, [error]);
 
   useEffect(() => {
-    //invalidateCache();
-  }, [invalidateCache]);
-
-  const selected_user = state.users.find((user) => user.id === idSelected);
+    refetch();
+  }, [refetch]);
 
   const UpdateUser = async (payload: Partial<UserModel>) => {
-    await dispatch({ type: ActionTypes.SET_UPDATING_USER, payload: true });
     const { id, ...rest } = payload;
+
+    await dispatch({ type: ActionTypes.SET_UPDATING_USER, payload: true });
 
     const { status } = await api.put(`/users/${id}`, rest);
     if (status && status < 300) {
@@ -60,15 +59,18 @@ const App = () => {
     updateCache(updatedUsers);
   };
 
+  const selected_user = state.users.find((user) => user.id === idSelected);
   return (
     <AppPage>
-      <List
-        loading={loading}
-        users={state.users ?? []}
-        selectedID={idSelected}
-        selectionHandler={(id) => setIdSelected(id)}
-      />
-      {selected_user ? <Section user={selected_user} handleUpdate={UpdateUser} /> : <CallToActionMessage />}
+      <>
+        <List
+          loading={loading}
+          users={state.users ?? []}
+          selectedID={idSelected}
+          selectionHandler={(id) => setIdSelected(id)}
+        />
+        {selected_user ? <Section user={selected_user} handleUpdate={UpdateUser} /> : <CallToActionMessage />}
+      </>
       {state.usersUpdating && <Loader />}
       {state.error && !loading && <ErrorMessage error={state.error} handlerClear={ResetError} />}
     </AppPage>

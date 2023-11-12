@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import api from '@/api';
-import { UserModel } from './types';
-import { updateLocalStorage, getLocalStorage } from '@/util/localStorage';
+import { UserModel } from '../types';
+import { getLocalStorage, updateLocalStorage } from '@/util/localStorage';
 
 interface useFetchUsersProps {
   cacheDurationSeconds?: number;
@@ -14,8 +14,9 @@ interface FetchUsersResult {
   users: UserModel[];
   loading: boolean;
   error: string | null;
-  invalidateCache: () => void;
+  refetch: () => void;
   updateCache: (_data: UserModel[]) => void;
+  fetchUsers: () => void;
 }
 
 const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}): FetchUsersResult => {
@@ -67,7 +68,7 @@ const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}
     }
   }, [cacheDurationSeconds]);
 
-  const invalidateCache = useCallback(() => {
+  const refetch = useCallback(() => {
     localStorage.removeItem(cacheKey);
     localStorage.removeItem(`${cacheKey}_timestamp`);
 
@@ -78,11 +79,7 @@ const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}
     updateLocalStorage(cacheKey, data);
   }, []);
 
-  useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
-
-  return { users, loading, error, invalidateCache, updateCache };
+  return { users, loading, error, refetch, updateCache, fetchUsers };
 };
 
 export default useFetchUsers;
