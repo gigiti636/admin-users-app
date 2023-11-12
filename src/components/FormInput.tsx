@@ -3,6 +3,7 @@ import sc from 'styled-components';
 import { memo } from 'react';
 
 interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
+  id?: string;
   label: string;
   placeholder?: string;
   error_message?: string;
@@ -33,7 +34,7 @@ const Input = sc.input<{ has_error: 'yes' | 'no' }>`
      box-shadow: ${(props) =>
        props.has_error === 'yes'
          ? `0px 0px 2px 1px ${props.theme.colors.secondaryLight}`
-         : `0px 0px 2px 1px #72a0ea`};
+         : `0px 0px 2px 3px #7fa7e8`};
   }
 `;
 
@@ -48,6 +49,7 @@ const ErrorMessage = sc.small`
 `;
 
 export const MemoizedInput = memo(function FormInput({
+  id,
   label,
   placeholder,
   error_message,
@@ -56,8 +58,8 @@ export const MemoizedInput = memo(function FormInput({
 }: FormInputProps) {
   return (
     <Container>
-      <Label>{label}:</Label>
-      <Input type="text" placeholder={placeholder} {...rest} has_error={has_error ? 'yes' : 'no'} />
+      <Label htmlFor={id}>{label}:</Label>
+      <Input id={id} type="text" placeholder={placeholder} {...rest} has_error={has_error ? 'yes' : 'no'} />
       {has_error && <ErrorMessage>{error_message}</ErrorMessage>}
     </Container>
   );

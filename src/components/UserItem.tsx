@@ -35,7 +35,7 @@ const UserDetails = sc.div`
   }
 `;
 
-const UserItemWrapper = sc.div<{ selected: boolean }>`
+const UserItemWrapper = sc.li<{ selected: boolean }>`
   display: flex;
   align-items: center;
   background-color: transparent;

@@ -31,7 +31,7 @@ export const List = ({ loading, users = [], selectionHandler, selectedID }: User
   );
 };
 
-export const UserListWrapper = sc.div`
+export const UserListWrapper = sc.aside`
     width: 100%;
     height: 100%;
     max-width: 90px;
@@ -40,7 +40,8 @@ export const UserListWrapper = sc.div`
         max-width: 50%;
     }
 `;
-export const ItemsWrapper = sc.div`
+export const ItemsWrapper = sc.ul`
+    padding-left: 0px;
     display: flex;
     flex-direction: column;
 `;

@@ -1,10 +1,11 @@
 import sc from 'styled-components';
 import type { UserModel } from '@/App/types';
-import { validateName, validatePhone, validateEmail } from '@/App/types';
+import { validateEmail, validateName, validatePhone } from '@/App/types';
 import { MemoizedInput } from '@/components/FormInput';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect } from 'react';
+import { useForm } from '@/util/useFormValidation';
 
-const SectionWrapper = sc.div`
+const SectionWrapper = sc.main`
     width: 100%;
     height: 100%;
     text-align: center;
@@ -19,7 +20,7 @@ const Message = sc.span`
  color: ${(props) => props.theme.text.secondary};
 `;
 
-const SaveButton = sc.button<{ isdirty: 'yes' | 'no' }>`
+const SaveButton = sc.button<{ isDirty: 'yes' | 'no' }>`
   background-color: ${(props) => props.theme.colors.primary};
   color: white;
   padding: 10px 15px;
@@ -27,8 +28,8 @@ const SaveButton = sc.button<{ isdirty: 'yes' | 'no' }>`
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  opacity: ${(props) => (props.isdirty === 'yes' ? 1 : 0.7)};
-  pointer-events: ${(props) => (props.isdirty === 'yes' ? 'all' : 'none')};
+  opacity: ${(props) => (props.isDirty === 'yes' ? 1 : 0.7)};
+  pointer-events: ${(props) => (props.isDirty === 'yes' ? 'all' : 'none')};
   &:active {
     background-color: #3989d5;
   }
@@ -55,11 +56,6 @@ const BtnWrapper = sc.div`
   width: 100%
 `;
 
-type ValidatorFunction = (_value: string) => string;
-interface FormFieldState {
-  [key: string]: { value: string; message: string; validator: ValidatorFunction | null };
-}
-
 interface SectionProps {
   user: UserModel;
   handleUpdate: (_data: Partial<UserModel>) => void;
@@ -75,55 +71,16 @@ export const Section = ({ user, handleUpdate }: SectionProps) => {
     company: { value: company, message: '', validator: null },
   };
 
-  const [formState, setFormState] = useState<FormFieldState>(initialFormState);
-
-  const handleInputChange = (value: string, for_key: string) => {
-    setFormState((prevState) => ({
-      ...prevState,
-      [for_key]: {
-        ...prevState[for_key],
-        value: value,
-        message: prevState[for_key]?.validator ? prevState[for_key].validator!(value) : '',
-      },
-    }));
-  };
+  const { formState, handleInputChange, validateForm, isDirty, resetForm } = useForm(initialFormState);
 
   useEffect(() => {
     resetForm();
   }, [user]);
 
-  const validateForm = () => {
-    let isFormValid = true;
-    const updatedFormState: FormFieldState = {};
-
-    Object.keys(formState).forEach((formField) => {
-      if (formState[formField]?.validator) {
-        const validationMessage = formState[formField].validator!(formState[formField].value);
-
-        updatedFormState[formField] = {
-          ...formState[formField],
-          message: validationMessage,
-        };
-
-        if (validationMessage) {
-          isFormValid = false;
-        }
-      }
-    });
-
-    // Update the form state in bulk
-    setFormState((prevState) => ({
-      ...prevState,
-      ...updatedFormState,
-    }));
-
-    return isFormValid;
-  };
-
   const UpdateHandler = (event: SyntheticEvent) => {
     event.preventDefault();
 
-    if (isdirty && validateForm()) {
+    if (isDirty && validateForm()) {
       const formData = Object.fromEntries(
         Object.entries(formState).map(([field, data]) => [field, data.value]),
       );
@@ -132,29 +89,12 @@ export const Section = ({ user, handleUpdate }: SectionProps) => {
       handleUpdate(formData);
     }
   };
-  const resetForm = () => {
-    setFormState(initialFormState);
-  };
 
-  const isdirty =
-    JSON.stringify({
-      name: formState.name.value,
-      email: formState.email.value,
-      phone: formState.phone.value,
-      address: formState.address.value,
-      company: formState.company.value,
-    }) !==
-    JSON.stringify({
-      name: user.name,
-      email: email,
-      phone: phone,
-      address: address,
-      company: company,
-    });
   return (
     <SectionWrapper>
       <form onSubmit={(event) => UpdateHandler(event)} style={{ width: '100%' }}>
         <MemoizedInput
+          id={'name-input'}
           label={'Name'}
           placeholder={'Enter Name'}
           value={formState.name.value}
@@ -164,6 +104,7 @@ export const Section = ({ user, handleUpdate }: SectionProps) => {
           onChange={(event) => handleInputChange(event.target.value, 'name')}
         />
         <MemoizedInput
+          id={'email-input'}
           label={'Email'}
           placeholder={'Enter Email'}
           value={formState.email.value}
@@ -173,6 +114,7 @@ export const Section = ({ user, handleUpdate }: SectionProps) => {
           onChange={(event) => handleInputChange(event.target.value, 'email')}
         />
         <MemoizedInput
+          id={'phone-input'}
           label={'Phone'}
           placeholder={'Enter Phone'}
           value={formState.phone.value}
@@ -182,6 +124,7 @@ export const Section = ({ user, handleUpdate }: SectionProps) => {
           onChange={(event) => handleInputChange(event.target.value, 'phone')}
         />
         <MemoizedInput
+          id={'address-input'}
           label={'Address'}
           placeholder={'Enter Address'}
           value={formState.address.value}
@@ -189,6 +132,7 @@ export const Section = ({ user, handleUpdate }: SectionProps) => {
           onChange={(event) => handleInputChange(event.target.value, 'address')}
         />
         <MemoizedInput
+          id={'company-input'}
           label={'Company'}
           placeholder={'Enter Company'}
           value={formState.company.value}
@@ -196,9 +140,13 @@ export const Section = ({ user, handleUpdate }: SectionProps) => {
           onChange={(event) => handleInputChange(event.target.value, 'company')}
         />
         <BtnWrapper>
-          {isdirty && <CancelButton onClick={resetForm}>Cancel</CancelButton>}
+          {isDirty && (
+            <CancelButton onClick={resetForm} aria-label="Cancel-edit-form">
+              Cancel
+            </CancelButton>
+          )}
 
-          <SaveButton isdirty={isdirty ? 'yes' : 'no'} disabled={!isdirty}>
+          <SaveButton isDirty={isDirty ? 'yes' : 'no'} disabled={!isDirty} aria-label="submit-form">
             Save
           </SaveButton>
         </BtnWrapper>

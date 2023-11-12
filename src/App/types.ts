@@ -35,8 +35,8 @@ export const validateEmail = (email: string): string => {
 export const validatePhone = (phone: string): string => {
   if (!phone) {
     return 'Phone number is required';
-  } else if (!/^\d{10}$/u.test(phone)) {
-    return 'Invalid phone number format';
+  } else if (phone.length < 10) {
+    return 'Invalid phone format';
   } else {
     return '';
   }

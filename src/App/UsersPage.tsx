@@ -36,7 +36,7 @@ const App = () => {
   }, [error]);
 
   useEffect(() => {
-    invalidateCache();
+    //invalidateCache();
   }, [invalidateCache]);
 
   const selected_user = state.users.find((user) => user.id === idSelected);
