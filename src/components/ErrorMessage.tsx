@@ -34,7 +34,7 @@ const ErrorMessage = ({ error, handlerClear }: ErrorMessageProps) => {
 
   return error ? (
     <CenteredErrorContainer onClick={handlerClear}>
-      <strong>Error :</strong> <span>{error}</span>
+      <span>{error}</span>
     </CenteredErrorContainer>
   ) : (
     <span></span>

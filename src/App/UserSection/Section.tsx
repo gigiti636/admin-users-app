@@ -5,7 +5,7 @@ import { MemoizedInput } from '@/components/FormInput';
 import { SyntheticEvent, useEffect } from 'react';
 import { useForm } from '@/util/useFormValidation';
 
-const SectionWrapper = sc.main`
+export const SectionWrapper = sc.main`
     width: 100%;
     height: 100%;
     text-align: center;
@@ -15,6 +15,7 @@ const SectionWrapper = sc.main`
     flex-direction: column;
     max-width: 400px;
     margin: 0 auto;
+    position: relative;
 `;
 const Message = sc.span`
  color: ${(props) => props.theme.text.secondary};
@@ -91,74 +92,71 @@ export const Section = ({ user, handleUpdate }: SectionProps) => {
   };
 
   return (
-    <SectionWrapper>
-      <form onSubmit={(event) => UpdateHandler(event)} style={{ width: '100%' }}>
-        <MemoizedInput
-          id={'name-input'}
-          label={'Name'}
-          placeholder={'Enter Name'}
-          value={formState.name.value}
-          name={'name'}
-          error_message={formState['name'].message}
-          has_error={formState['name'].message.length > 0}
-          onChange={(event) => handleInputChange(event.target.value, 'name')}
-        />
-        <MemoizedInput
-          id={'email-input'}
-          label={'Email'}
-          placeholder={'Enter Email'}
-          value={formState.email.value}
-          name={'email'}
-          error_message={formState['email'].message}
-          has_error={formState['email'].message.length > 0}
-          onChange={(event) => handleInputChange(event.target.value, 'email')}
-        />
-        <MemoizedInput
-          id={'phone-input'}
-          label={'Phone'}
-          placeholder={'Enter Phone'}
-          value={formState.phone.value}
-          name={'phone'}
-          error_message={formState['phone'].message}
-          has_error={formState['phone'].message.length > 0}
-          onChange={(event) => handleInputChange(event.target.value, 'phone')}
-        />
-        <MemoizedInput
-          id={'address-input'}
-          label={'Address'}
-          placeholder={'Enter Address'}
-          value={formState.address.value}
-          name={'address'}
-          onChange={(event) => handleInputChange(event.target.value, 'address')}
-        />
-        <MemoizedInput
-          id={'company-input'}
-          label={'Company'}
-          placeholder={'Enter Company'}
-          value={formState.company.value}
-          name={'company'}
-          onChange={(event) => handleInputChange(event.target.value, 'company')}
-        />
-        <BtnWrapper>
-          {isDirty && (
-            <CancelButton onClick={resetForm} aria-label="Cancel-edit-form">
-              Cancel
-            </CancelButton>
-          )}
+    <form onSubmit={(event) => UpdateHandler(event)} style={{ width: '100%' }}>
+      <MemoizedInput
+        id={'name-input'}
+        label={'Name'}
+        placeholder={'Enter Name'}
+        value={formState.name.value}
+        name={'name'}
+        error_message={formState['name'].message}
+        has_error={formState['name'].message.length > 0}
+        onChange={(event) => handleInputChange(event.target.value, 'name')}
+      />
+      <MemoizedInput
+        id={'email-input'}
+        label={'Email'}
+        placeholder={'Enter Email'}
+        value={formState.email.value}
+        name={'email'}
+        error_message={formState['email'].message}
+        has_error={formState['email'].message.length > 0}
+        onChange={(event) => handleInputChange(event.target.value, 'email')}
+      />
+      <MemoizedInput
+        id={'phone-input'}
+        label={'Phone'}
+        placeholder={'Enter Phone'}
+        value={formState.phone.value}
+        name={'phone'}
+        error_message={formState['phone'].message}
+        has_error={formState['phone'].message.length > 0}
+        onChange={(event) => handleInputChange(event.target.value, 'phone')}
+      />
+      <MemoizedInput
+        id={'address-input'}
+        label={'Address'}
+        placeholder={'Enter Address'}
+        value={formState.address.value}
+        name={'address'}
+        onChange={(event) => handleInputChange(event.target.value, 'address')}
+      />
+      <MemoizedInput
+        id={'company-input'}
+        label={'Company'}
+        placeholder={'Enter Company'}
+        value={formState.company.value}
+        name={'company'}
+        onChange={(event) => handleInputChange(event.target.value, 'company')}
+      />
+      <BtnWrapper>
+        {isDirty && (
+          <CancelButton onClick={resetForm} aria-label="Cancel-edit-form">
+            Cancel
+          </CancelButton>
+        )}
 
-          <SaveButton isDirty={isDirty ? 'yes' : 'no'} disabled={!isDirty} aria-label="submit-form">
-            Save
-          </SaveButton>
-        </BtnWrapper>
-      </form>
-    </SectionWrapper>
+        <SaveButton isDirty={isDirty ? 'yes' : 'no'} disabled={!isDirty} aria-label="submit-form">
+          Save
+        </SaveButton>
+      </BtnWrapper>
+    </form>
   );
 };
 
-export const CallToActionMessage = () => {
-  return (
-    <SectionWrapper>
-      <Message>Select a user from the list</Message>
-    </SectionWrapper>
-  );
+interface CallToActionMessageProps {
+  message?: string;
+}
+export const CallToActionMessage = ({ message }: CallToActionMessageProps) => {
+  return <Message>{message ? message : 'Select a user from the list'}</Message>;
 };

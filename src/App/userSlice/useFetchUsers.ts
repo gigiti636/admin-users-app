@@ -12,8 +12,8 @@ export const cacheKey = 'cachedUsers';
 
 interface FetchUsersResult {
   users: UserModel[];
-  loading: boolean;
-  error: string | null;
+  fetching: boolean;
+  fetchErr: string | null;
   refetch: () => void;
   updateCache: (_data: UserModel[]) => void;
   fetchUsers: () => void;
@@ -21,13 +21,13 @@ interface FetchUsersResult {
 
 const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}): FetchUsersResult => {
   const [users, setUsers] = useState<UserModel[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchUsers = useCallback(async () => {
     try {
       setError(null);
-      setLoading(true);
+      setFetching(true);
 
       if (cacheDurationSeconds) {
         const cachedData = getLocalStorage<UserModel[]>(cacheKey, []);
@@ -42,7 +42,7 @@ const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}
             if (onData) {
               onData(cachedData);
             }
-            setLoading(false);
+            setFetching(false);
             return;
           }
         }
@@ -54,17 +54,17 @@ const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}
         if (onData) {
           onData(data);
         }
-      }
-
-      if (cacheDurationSeconds) {
-        updateLocalStorage(cacheKey, data);
-        updateLocalStorage(`${cacheKey}_timestamp`, new Date().getTime().toString());
+        if (cacheDurationSeconds) {
+          updateLocalStorage(cacheKey, data);
+          updateLocalStorage(`${cacheKey}_timestamp`, new Date().getTime().toString());
+        }
+      } else {
+        setError('Error fetching users');
       }
     } catch (error) {
       setError('Error fetching users');
     } finally {
-      setLoading(false);
-      setError(null);
+      setFetching(false);
     }
   }, [cacheDurationSeconds]);
 
@@ -79,7 +79,7 @@ const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}
     updateLocalStorage(cacheKey, data);
   }, []);
 
-  return { users, loading, error, refetch, updateCache, fetchUsers };
+  return { users, fetching, refetch, updateCache, fetchUsers, fetchErr: error };
 };
 
 export default useFetchUsers;

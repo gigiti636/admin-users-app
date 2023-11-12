@@ -5,16 +5,16 @@ import { LoadingList } from '@/App/UserList/LoadingList';
 import { MemoizedItem } from '@/components/UserItem';
 
 interface UserListProps {
-  loading: boolean;
+  fetching: boolean;
   users: UserModel[];
   selectedID: string;
   selectionHandler: (_id: string) => void;
 }
-export const List = ({ loading, users = [], selectionHandler, selectedID }: UserListProps) => {
+export const List = ({ fetching, users = [], selectionHandler, selectedID }: UserListProps) => {
   return (
     <UserListWrapper>
-      {loading ? (
-        <LoadingList times={5} />
+      {fetching ? (
+        <LoadingList times={7} />
       ) : (
         <ItemsWrapper>
           {users.map((user) => (
@@ -44,4 +44,5 @@ export const ItemsWrapper = sc.ul`
     padding-left: 0px;
     display: flex;
     flex-direction: column;
+    margin-top: 0;
 `;
