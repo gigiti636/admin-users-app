@@ -2,8 +2,8 @@ import sc from 'styled-components';
 import { FC } from 'react';
 
 const AvatarContainer = sc.div<{ size?: string }>`
-  width: ${(props) => (props.size ? props.size : '40px')};
-  height: ${(props) => (props.size ? props.size : '40px')};
+  width: ${(props) => (props.size ? props.size : '100px')};
+  height: ${(props) => (props.size ? props.size : '100px')};
   border-radius: 50%;
   overflow: hidden;
   display: flex;

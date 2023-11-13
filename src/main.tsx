@@ -18,6 +18,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 //create  feature userList, put there hook and a provider, ** have to create wrapper for provider
 //use context instead of hook
 
-//todo css modifications
 //todo make app accessible
 //TODO Write tests

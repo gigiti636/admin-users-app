@@ -60,6 +60,10 @@ export const GlobalStyle = createGlobalStyle`
     --webkit-text-size-adjust: 100%;
   }
   
+  html, body, {
+     background: whitesmoke;
+  }
+  
 
   @font-face {
     font-family: 'Roboto';

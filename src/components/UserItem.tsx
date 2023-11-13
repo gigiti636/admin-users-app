@@ -10,10 +10,11 @@ const AvatarWrapper = sc.div`
 
 const UserName = sc.div<{ selected?: boolean }>`
     font-weight: bold;
-   
+    color: ${(props) => (props.selected ? 'white' : 'black')};
 `;
 const UserEmail = sc.div<{ selected?: boolean }>`
   font-size: 0.9rem;
+  color:  ${(props) => (props.selected ? 'lightgray!important' : props.theme.text.secondary)};
 `;
 const UserDetails = sc.div`
   padding: 10px 5px 10px 5px;
@@ -25,14 +26,6 @@ const UserDetails = sc.div`
     display: inline-block;
   }
 
-  &:hover {
-    ${UserEmail} {
-      color: ${(props) => props.theme.text.secondary};
-    }
-    ${UserName} {
-      color: white;
-    }
-  }
 `;
 
 const UserItemWrapper = sc.li<{ selected: boolean }>`
@@ -42,13 +35,23 @@ const UserItemWrapper = sc.li<{ selected: boolean }>`
   transition: background-color 0.3s ease-in;
   cursor: pointer;
   min-height: 80px;
-  background-color:  ${(props) => (props.selected ? `${props.theme.colors.secondaryDark}` : 'transparent')};
+  background-color:  ${(props) =>
+    props.selected ? `${props.theme.colors.primary}!important` : 'transparent'};
   &:hover {
-    background-color:  ${(props) => props.theme.colors.primary};
+    background-color:  ${(props) => props.theme.colors.secondaryDark};
   }
   &:active {
     background-color: #3989d5;
   }
+  
+    &:hover {
+      ${UserEmail} {
+        color: ${(props) => props.theme.text.secondary};
+      }
+      ${UserName} {
+        color: ${(props) => (props.selected ? 'white' : 'black')};
+      }
+    }
 `;
 
 interface UserItemProps {
@@ -67,7 +70,7 @@ export const MemoizedItem = memo(function UserItem({
   return (
     <UserItemWrapper onClick={handleClick} selected={isSelected} title={user.name}>
       <AvatarWrapper>
-        <Avatar photo={user.photo} alt={user.name} size={'60px'} />
+        <Avatar photo={user.photo} alt={user.name} size={'82px'} />
       </AvatarWrapper>
       <UserDetails>
         <UserName selected={isSelected}>{user.name}</UserName>

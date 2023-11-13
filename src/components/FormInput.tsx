@@ -12,14 +12,14 @@ interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const Container = sc.div`
   text-align: left;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   width: 100%;
+  position: relative
 `;
 
 const Input = sc.input<{ has_error: 'yes' | 'no' }>`
   width: 100%;
-  border: ${(props) =>
-    props.has_error === 'yes' ? `1px solid red` : `1px solid ${props.theme.colors.secondaryLight}`};
+  border: ${(props) => (props.has_error === 'yes' ? `1px solid red` : `1px solid #ececec`)};
   height: 40px;
   box-sizing: border-box;
   font-size: 1.1rem;
@@ -34,7 +34,7 @@ const Input = sc.input<{ has_error: 'yes' | 'no' }>`
      box-shadow: ${(props) =>
        props.has_error === 'yes'
          ? `0px 0px 2px 1px ${props.theme.colors.secondaryLight}`
-         : `0px 0px 2px 3px #7fa7e8`};
+         : `0px 0px 2px 3px #4d93d7`};
   }
 `;
 
@@ -44,8 +44,11 @@ const Label = sc.label`
 `;
 const ErrorMessage = sc.small`
   color: red;
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   margin-bottom: 0;
+  position: absolute;
+  bottom: -22px;
+  left: 0;
 `;
 
 export const MemoizedInput = memo(function FormInput({
@@ -60,7 +63,9 @@ export const MemoizedInput = memo(function FormInput({
     <Container>
       <Label htmlFor={id}>{label}:</Label>
       <Input id={id} type="text" placeholder={placeholder} {...rest} has_error={has_error ? 'yes' : 'no'} />
-      {has_error && <ErrorMessage>{error_message}</ErrorMessage>}
+      <ErrorMessage style={{ visibility: has_error ? 'visible' : 'hidden' }}>
+        {error_message ?? ''}
+      </ErrorMessage>
     </Container>
   );
 });

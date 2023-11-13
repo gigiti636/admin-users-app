@@ -34,10 +34,10 @@ export const List = ({ fetching, users = [], selectionHandler, selectedID }: Use
 export const UserListWrapper = sc.aside`
     width: 100%;
     height: 100%;
-    max-width: 90px;
     overflow-y: scroll;
+    flex: 0 0 22%;
     @media only screen and ${breakpoints.desktop} {
-        max-width: 50%;
+        flex: 0 0 50%;
     }
 `;
 export const ItemsWrapper = sc.ul`

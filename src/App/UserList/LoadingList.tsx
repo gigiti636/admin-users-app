@@ -11,8 +11,8 @@ const loadingAnimation = keyframes`
 `;
 const LoadingAvatar = sc.div<{ size?: string }>`
   margin-left: 8px;
-  width: 60px;
-  height: 60px;
+  width: 82px;
+  height: 82px;
   border-radius: 50%;
   display: flex;
   align-items: center;

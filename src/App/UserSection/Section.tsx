@@ -4,18 +4,29 @@ import { validateEmail, validateName, validatePhone } from './validators';
 import { MemoizedInput } from '@/components/FormInput';
 import { SyntheticEvent, useEffect } from 'react';
 import { useForm } from '@/util/useFormValidation';
+import { breakpoints } from '@/theme/breakpoints';
 
-export const SectionWrapper = sc.main`
-    width: 100%;
+export const SectionWrapper = sc.section`
     height: 100%;
     text-align: center;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     flex-direction: column;
-    max-width: 400px;
-    margin: 0 auto;
+    padding-left: 17px;
+    padding-right: 17px;
     position: relative;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:30px;
+    flex: 1;
+       @media only screen and ${breakpoints.desktop} {
+           margin-top:unset;
+           justify-content: center;
+           padding-left: 35px;
+           padding-right: 35px;
+   }
+        
 `;
 const Message = sc.span`
  color: ${(props) => props.theme.text.secondary};
@@ -32,7 +43,7 @@ const SaveButton = sc.button<{ isDirty: 'yes' | 'no' }>`
   opacity: ${(props) => (props.isDirty === 'yes' ? 1 : 0.7)};
   pointer-events: ${(props) => (props.isDirty === 'yes' ? 'all' : 'none')};
   &:active {
-    background-color: #3989d5;
+    background-color: #4d93d7;
   }
 `;
 
@@ -76,7 +87,8 @@ export const UserForm = ({ user, handleUpdate }: SectionProps) => {
 
   useEffect(() => {
     resetForm();
-  }, [user, resetForm]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const UpdateHandler = (event: SyntheticEvent) => {
     event.preventDefault();

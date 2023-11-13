@@ -9,7 +9,6 @@ interface BaseProviderProps {
 }
 const StyledRoot = sc.div`
     background-color: whitesmoke;
-    display: flex;
     height: 100vh;
     justify-content: center;
 `;
@@ -35,7 +34,9 @@ const Container = sc.div`
     @media only screen and ${breakpoints.desktop} {
          box-shadow: ${(props) => props.theme.boxShadow.basic};
          max-height: 600px;
-         margin: auto; auto;
+         margin-left: auto;
+         margin-right: auto;
+         margin-top: 140px;
     }
 
 `;
