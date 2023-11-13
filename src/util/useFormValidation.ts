@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 interface FormFieldState {
   value: string;
@@ -33,7 +33,8 @@ export const useForm = (
       [fieldName]: {
         ...prevFormState[fieldName],
         value,
-        message: prevFormState[fieldName]?.validator ? prevFormState[fieldName].validator!(value) : '',
+        /* eslint-disable @typescript-eslint/no-non-null-assertion */
+        message: prevFormState[fieldName]?.validator ? prevFormState[fieldName]!.validator!(value) : '',
       },
     }));
     setIsDirty(true);
@@ -66,7 +67,7 @@ export const useForm = (
     return isValid;
   };
 
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     setFormState(() => {
       const resetFormState: FormState = {} as FormState;
       Object.keys(initialValues).forEach((key) => {
@@ -80,7 +81,8 @@ export const useForm = (
     });
 
     setIsDirty(false);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return { formState, handleInputChange, validateForm, isDirty, resetForm };
 };

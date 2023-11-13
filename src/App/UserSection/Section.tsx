@@ -61,7 +61,7 @@ interface SectionProps {
   user: UserModel;
   handleUpdate: (_data: Partial<UserModel>) => void;
 }
-export const Section = ({ user, handleUpdate }: SectionProps) => {
+export const UserForm = ({ user, handleUpdate }: SectionProps) => {
   const { name, email, phone, address, company } = user;
 
   const initialFormState = {
@@ -76,7 +76,7 @@ export const Section = ({ user, handleUpdate }: SectionProps) => {
 
   useEffect(() => {
     resetForm();
-  }, [user]);
+  }, [user, resetForm]);
 
   const UpdateHandler = (event: SyntheticEvent) => {
     event.preventDefault();

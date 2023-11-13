@@ -30,7 +30,9 @@ export const useUserSlice = () => {
   );
 
   const { refetch, fetching, fetchUsers, updateCache, fetchErr } = useFetchUsers({
-    cacheDurationSeconds: 0,
+    cacheDurationSeconds: !isNaN(import.meta.env.VITE_CACHE_VALIDATION_TIME)
+      ? import.meta.env.VITE_CACHE_VALIDATION_TIME
+      : 60,
     onData: (data) => setUsers(data),
   });
 
@@ -57,10 +59,12 @@ export const useUserSlice = () => {
 
   useEffect(() => {
     if (error) setError(error);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchErr]);
 
   useEffect(() => {
-    refetch();
+    fetchUsers();
+    //refetch, invalidates cache
   }, [fetchUsers]);
 
   const { users, error, usersUpdating } = state;

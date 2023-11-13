@@ -5,7 +5,7 @@ import ErrorMessage from '@/components/ErrorMessage';
 import Loader from '@/components/Loader';
 
 import { List } from './UserList/List';
-import { CallToActionMessage, Section, SectionWrapper } from './UserSection/Section';
+import { CallToActionMessage, UserForm, SectionWrapper } from './UserSection/Section';
 
 import { UserModel } from './types';
 import { useUserSlice } from './userSlice';
@@ -31,7 +31,7 @@ const App = () => {
         />
         <SectionWrapper>
           {selected_user ? (
-            <Section user={selected_user} handleUpdate={UpdateUser} />
+            <UserForm user={selected_user} handleUpdate={UpdateUser} />
           ) : (
             <CallToActionMessage message={fetching ? 'Fetching users' : ''} />
           )}

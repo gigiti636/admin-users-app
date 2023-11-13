@@ -49,6 +49,7 @@ const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}
       }
 
       const { data } = await api.get<UserModel[]>('/users');
+
       if (data) {
         setUsers(data);
         if (onData) {
@@ -66,6 +67,7 @@ const useFetchUsers = ({ cacheDurationSeconds, onData }: useFetchUsersProps = {}
     } finally {
       setFetching(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cacheDurationSeconds]);
 
   const refetch = useCallback(() => {
