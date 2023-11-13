@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
 interface FormFieldState {
   value: string;
@@ -67,7 +67,7 @@ export const useForm = (
     return isValid;
   };
 
-  const resetForm = useCallback(() => {
+  const resetForm = () => {
     setFormState(() => {
       const resetFormState: FormState = {} as FormState;
       Object.keys(initialValues).forEach((key) => {
@@ -82,7 +82,7 @@ export const useForm = (
 
     setIsDirty(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
   return { formState, handleInputChange, validateForm, isDirty, resetForm };
 };
