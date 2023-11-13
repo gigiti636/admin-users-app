@@ -53,16 +53,19 @@ const UserItemWrapper = sc.li<{ selected: boolean }>`
 
 interface UserItemProps {
   user: UserModel;
-  isSelected: boolean;
-  clickHandler: (_id: string) => void;
+  isSelected?: boolean;
+  clickHandler?: (_id: string) => void;
 }
 export const MemoizedItem = memo(function UserItem({
   user,
   isSelected = false,
   clickHandler,
 }: UserItemProps) {
+  const handleClick = () => {
+    if (clickHandler) clickHandler(user.id);
+  };
   return (
-    <UserItemWrapper onClick={() => clickHandler(user.id)} selected={isSelected} title={user.name}>
+    <UserItemWrapper onClick={handleClick} selected={isSelected} title={user.name}>
       <AvatarWrapper>
         <Avatar photo={user.photo} alt={user.name} size={'60px'} />
       </AvatarWrapper>
