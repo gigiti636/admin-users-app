@@ -30,7 +30,8 @@ const Input = sc.input<{ has_error: 'yes' | 'no' }>`
     color: grey;
   }
   &:focus-within {
-    outline-color: ${(props) => `${props.theme.colors.secondaryDark}`};
+     outline-color:  ${(props) =>
+       props.has_error === 'yes' ? `` : `0px 0px 2px 3px ${props.theme.colors.secondaryDark}`};
      box-shadow: ${(props) =>
        props.has_error === 'yes'
          ? `0px 0px 2px 1px ${props.theme.colors.secondaryLight}`
@@ -62,8 +63,21 @@ export const MemoizedInput = memo(function FormInput({
   return (
     <Container>
       <Label htmlFor={id}>{label}:</Label>
-      <Input id={id} type="text" placeholder={placeholder} {...rest} has_error={has_error ? 'yes' : 'no'} />
-      <ErrorMessage style={{ visibility: has_error ? 'visible' : 'hidden' }}>
+      <Input
+        aria-describedby={label}
+        id={id}
+        type="text"
+        placeholder={placeholder}
+        {...rest}
+        has_error={has_error ? 'yes' : 'no'}
+      />
+      <ErrorMessage
+        aria-live="polite"
+        role="alert"
+        aria-hidden="true"
+        style={{ visibility: has_error ? 'visible' : 'hidden' }}
+        id={`error${id}`}
+      >
         {error_message ?? ''}
       </ErrorMessage>
     </Container>

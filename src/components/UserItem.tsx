@@ -8,8 +8,9 @@ const AvatarWrapper = sc.div`
   padding: 10px 5px 10px 5px;
 `;
 
-const UserName = sc.div<{ selected?: boolean }>`
+const UserName = sc.a<{ selected?: boolean }>`
     font-weight: bold;
+    text-decoration: none;
     color: ${(props) => (props.selected ? 'white' : 'black')};
 `;
 const UserEmail = sc.div<{ selected?: boolean }>`
@@ -72,8 +73,10 @@ export const MemoizedItem = memo(function UserItem({
       <AvatarWrapper>
         <Avatar photo={user.photo} alt={user.name} size={'82px'} />
       </AvatarWrapper>
-      <UserDetails>
-        <UserName selected={isSelected}>{user.name}</UserName>
+      <UserDetails role="group" aria-labelledby="user-details">
+        <UserName href="#" role="link" selected={isSelected}>
+          {user.name}
+        </UserName>
         <UserEmail selected={isSelected}>{user.email}</UserEmail>
       </UserDetails>
     </UserItemWrapper>

@@ -21,7 +21,7 @@ const AppTheme = ({ children }: BaseProviderProps) => {
   );
 };
 
-const Container = sc.div`
+const Container = sc.main`
     margin: 0;
     position: relative;
     width: 100%;

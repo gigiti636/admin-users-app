@@ -40,3 +40,7 @@ available scripts
 "lint": to lint,
 "format": to format,
 ###use npm run {script} to execute
+
+`for commit 
+you have to format code run, npm run format
+you have to fix linter fun, npm run lint`

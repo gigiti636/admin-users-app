@@ -16,9 +16,10 @@ export const List = ({ fetching, users = [], selectionHandler, selectedID }: Use
       {fetching ? (
         <LoadingList times={7} />
       ) : (
-        <ItemsWrapper>
+        <ItemsWrapper aria-labelledby="user-list" id={'user-list'}>
           {users.map((user) => (
             <MemoizedItem
+              role="listitem"
               key={user.id}
               user={user}
               clickHandler={(id: string) => selectionHandler(id)}
@@ -31,7 +32,7 @@ export const List = ({ fetching, users = [], selectionHandler, selectedID }: Use
   );
 };
 
-export const UserListWrapper = sc.aside`
+export const UserListWrapper = sc.section`
     width: 100%;
     height: 100%;
     overflow-y: scroll;

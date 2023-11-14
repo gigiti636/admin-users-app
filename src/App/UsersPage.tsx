@@ -33,7 +33,7 @@ const App = () => {
           {selected_user ? (
             <UserForm user={selected_user} handleUpdate={UpdateUser} />
           ) : (
-            <CallToActionMessage message={fetching ? 'Fetching users' : ''} />
+            <CallToActionMessage message={fetching ? 'Fetching users' : ''} id="user-list-heading" />
           )}
           {usersUpdating && <Loader />}
         </SectionWrapper>

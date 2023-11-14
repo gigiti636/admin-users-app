@@ -6,7 +6,7 @@ import { SyntheticEvent, useEffect } from 'react';
 import { useForm } from '@/util/useFormValidation';
 import { breakpoints } from '@/theme/breakpoints';
 
-export const SectionWrapper = sc.section`
+export const SectionWrapper = sc.aside`
     height: 100%;
     text-align: center;
     display: flex;
@@ -104,7 +104,11 @@ export const UserForm = ({ user, handleUpdate }: SectionProps) => {
   };
 
   return (
-    <form onSubmit={(event) => UpdateHandler(event)} style={{ width: '100%' }}>
+    <form
+      onSubmit={(event) => UpdateHandler(event)}
+      style={{ width: '100%' }}
+      aria-labelledby="user-information"
+    >
       <MemoizedInput
         id={'name-input'}
         label={'Name'}
@@ -153,12 +157,17 @@ export const UserForm = ({ user, handleUpdate }: SectionProps) => {
       />
       <BtnWrapper>
         {isDirty && (
-          <CancelButton onClick={resetForm} aria-label="Cancel-edit-form">
+          <CancelButton onClick={resetForm} aria-label="Cancel-edit-form" id="cancel-btn">
             Cancel
           </CancelButton>
         )}
 
-        <SaveButton isDirty={isDirty ? 'yes' : 'no'} disabled={!isDirty} aria-label="submit-form">
+        <SaveButton
+          isDirty={isDirty ? 'yes' : 'no'}
+          disabled={!isDirty}
+          aria-label="submit-form"
+          id="submit-btn"
+        >
           Save
         </SaveButton>
       </BtnWrapper>
