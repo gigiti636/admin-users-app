@@ -60,7 +60,7 @@ export const GlobalStyle = createGlobalStyle`
     --webkit-text-size-adjust: 100%;
   }
   
-  html, body, {
+  html, body {
      background: whitesmoke;
   }
   

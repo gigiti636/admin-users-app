@@ -3,9 +3,10 @@ import { useState } from 'react';
 import { AppPage } from '@/components/Layout';
 import ErrorMessage from '@/components/ErrorMessage';
 import Loader from '@/components/Loader';
+import { CallToActionMessage } from '@/components/Message';
 
 import { List } from './UserList/List';
-import { CallToActionMessage, UserForm, SectionWrapper } from './UserSection/Section';
+import { UserForm, SectionWrapper } from './UserSection/Section';
 
 import { UserModel } from './types';
 import { useUserSlice } from './userSlice';
@@ -33,7 +34,7 @@ const App = () => {
           {selected_user ? (
             <UserForm user={selected_user} handleUpdate={UpdateUser} />
           ) : (
-            <CallToActionMessage message={fetching ? 'Fetching users' : ''} id="user-list-heading" />
+            <CallToActionMessage message={fetching ? 'Fetching users' : ''} />
           )}
           {usersUpdating && <Loader />}
         </SectionWrapper>

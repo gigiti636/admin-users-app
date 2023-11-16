@@ -69,7 +69,7 @@ export const MemoizedItem = memo(function UserItem({
     if (clickHandler) clickHandler(user.id);
   };
   return (
-    <UserItemWrapper onClick={handleClick} selected={isSelected} title={user.name}>
+    <UserItemWrapper onClick={handleClick} selected={isSelected} title={user.name} role="listitem">
       <AvatarWrapper>
         <Avatar photo={user.photo} alt={user.name} size={'82px'} />
       </AvatarWrapper>

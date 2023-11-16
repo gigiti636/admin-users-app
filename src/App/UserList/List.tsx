@@ -12,14 +12,13 @@ interface UserListProps {
 }
 export const List = ({ fetching, users = [], selectionHandler, selectedID }: UserListProps) => {
   return (
-    <UserListWrapper>
+    <UserListWrapper data-testid="user-list-wrapper">
       {fetching ? (
         <LoadingList times={7} />
       ) : (
         <ItemsWrapper aria-labelledby="user-list" id={'user-list'}>
           {users.map((user) => (
             <MemoizedItem
-              role="listitem"
               key={user.id}
               user={user}
               clickHandler={(id: string) => selectionHandler(id)}

@@ -3,6 +3,8 @@ import type { UserModel } from '@/App/types';
 import { validateEmail, validateName, validatePhone } from './validators';
 import { MemoizedInput } from '@/components/FormInput';
 import { SyntheticEvent, useEffect } from 'react';
+import { SaveBtn } from '@/components/SaveBtn';
+import { CancelBtn } from '@/components/CancelBtn';
 import { useForm } from '@/util/useFormValidation';
 import { breakpoints } from '@/theme/breakpoints';
 
@@ -28,40 +30,7 @@ export const SectionWrapper = sc.aside`
    }
         
 `;
-const Message = sc.span`
- color: ${(props) => props.theme.text.secondary};
-`;
 
-const SaveButton = sc.button<{ isDirty: 'yes' | 'no' }>`
-  background-color: ${(props) => props.theme.colors.primary};
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  opacity: ${(props) => (props.isDirty === 'yes' ? 1 : 0.7)};
-  pointer-events: ${(props) => (props.isDirty === 'yes' ? 'all' : 'none')};
-  &:active {
-    background-color: #4d93d7;
-  }
-`;
-
-const CancelButton = sc.button`
-  background-color: ${(props) => props.theme.colors.secondaryMain};
-  color: ${(props) => props.theme.text.main};;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  type: button;
-  fontWeight: bold;
-  font-size: 16px;
-  margin-right: 12px;
-  &:active {
-      background-color: ${(props) => props.theme.colors.secondaryDark};
-  }
-`;
 const BtnWrapper = sc.div`
   display: flex;
   justify-content: flex-end;
@@ -107,7 +76,8 @@ export const UserForm = ({ user, handleUpdate }: SectionProps) => {
     <form
       onSubmit={(event) => UpdateHandler(event)}
       style={{ width: '100%' }}
-      aria-labelledby="user-information"
+      data-testid={'user_form'}
+      aria-labelledby="user-information-form"
     >
       <MemoizedInput
         id={'name-input'}
@@ -156,28 +126,9 @@ export const UserForm = ({ user, handleUpdate }: SectionProps) => {
         onChange={(event) => handleInputChange(event.target.value, 'company')}
       />
       <BtnWrapper>
-        {isDirty && (
-          <CancelButton onClick={resetForm} aria-label="Cancel-edit-form" id="cancel-btn">
-            Cancel
-          </CancelButton>
-        )}
-
-        <SaveButton
-          isDirty={isDirty ? 'yes' : 'no'}
-          disabled={!isDirty}
-          aria-label="submit-form"
-          id="submit-btn"
-        >
-          Save
-        </SaveButton>
+        {isDirty && <CancelBtn onClick={resetForm} />}
+        <SaveBtn isDirty={isDirty} />
       </BtnWrapper>
     </form>
   );
-};
-
-interface CallToActionMessageProps {
-  message?: string;
-}
-export const CallToActionMessage = ({ message }: CallToActionMessageProps) => {
-  return <Message>{message ? message : 'Select a user from the list'}</Message>;
 };

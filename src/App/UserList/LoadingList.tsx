@@ -71,5 +71,5 @@ interface LoadingListProps {
 export const LoadingList = ({ times }: LoadingListProps) => {
   const loadingItems = Array.from({ length: times }, (_, index) => <LoadingItem key={index} />);
 
-  return <LoadingListContainer>{loadingItems}</LoadingListContainer>;
+  return <LoadingListContainer id={'loading-list'}>{loadingItems}</LoadingListContainer>;
 };
