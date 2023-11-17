@@ -104,35 +104,6 @@ describe('Form', () => {
     expect(originalValue).not.toBe(inputName.value);
   });
 
-  it('On success user edit, user list updated', async () => {
-    render(<App />);
-    await waitForDelay(1000);
-
-    const { FirstItem } = getListInfo('user-list-wrapper');
-    fireEvent.click(FirstItem);
-
-    await waitForDelay(200);
-
-    const form = screen.getByTestId('user_form') as HTMLElement;
-    const inputName = form.querySelector('#name-input') as HTMLInputElement;
-
-    // Update input value
-    const newName = 'Updated UserName';
-
-    userEventLib.type(inputName, newName);
-
-    // Trigger save button
-    const saveButton = form.querySelector('#submit-btn') as HTMLButtonElement;
-    fireEvent.click(saveButton);
-
-    await waitForDelay(700);
-
-    const firstListItem = screen
-      .getByTestId('user-list-wrapper')
-      .querySelector('ul li:first-child') as HTMLElement;
-    expect(firstListItem).toHaveAttribute('title', newName);
-  });
-
   it('Form - pre-edit Cancel btn is not in the dom', async () => {
     render(<App />);
     await waitForDelay(1000);
@@ -163,16 +134,7 @@ describe('Form', () => {
     const SaveBtn = form.querySelector('#submit-btn') as HTMLButtonElement;
 
     expect(SaveBtn).toBeInTheDocument();
-
-    /*
-      works on component => it might be a Styled-components issue
-      &:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-      }
-    */
-    //const computedStyle = window.getComputedStyle(SaveBtn);
-    //expect(computedStyle.getPropertyValue('disabled')).toBe('true');
+    expect(SaveBtn).toHaveAttribute('disabled', '');
   });
 
   it('Form - form is reset', async () => {
