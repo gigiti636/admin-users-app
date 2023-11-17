@@ -39,6 +39,7 @@ available scripts
 "build": for build",
 "lint": to lint,
 "format": to format,
+"test": to run tests,
 ###use npm run {script} to execute
 
 `for commit 
