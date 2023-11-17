@@ -45,3 +45,11 @@ available scripts
 `for commit 
 you have to format code run, npm run format
 you have to fix linter fun, npm run lint`
+
+
+Thoughts on improvements that couldn't be made because of time constrains:
+
+1) UserList should have pagination or it should be virtual rendered
+2) userSlice could be refactored to a global slice using context, or useRef with external sync storage for better performance
+3) More tests could be written for the css styles but to test styled-components need additional configuration
+4) We could integrate test to use msw service worker and faker to mock requests
