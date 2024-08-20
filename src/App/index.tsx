@@ -1,14 +1,16 @@
 import { useState } from 'react';
-
+//components
 import { AppPage } from '@/components/Layout';
 import ErrorMessage from '@/components/ErrorMessage';
 import Loader from '@/components/Loader';
 import { CallToActionMessage } from '@/components/Message';
-
-import { List } from './UserList/List';
-import { UserForm, SectionWrapper } from './UserSection/Section';
-
+import { SectionWrapper } from '@/components/SectionWrapper';
+//App components
+import { UserList } from './UserList';
+import { UserForm } from './UserForm';
+//types
 import { UserModel } from './types';
+//data slice
 import { useUserSlice } from './userSlice';
 
 const App = () => {
@@ -24,7 +26,7 @@ const App = () => {
   return (
     <AppPage>
       <>
-        <List
+        <UserList
           fetching={fetching}
           users={users ?? []}
           selectedID={idSelected}

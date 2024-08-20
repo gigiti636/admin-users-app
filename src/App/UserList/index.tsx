@@ -10,7 +10,7 @@ interface UserListProps {
   selectedID: string;
   selectionHandler: (_id: string) => void;
 }
-export const List = ({ fetching, users = [], selectionHandler, selectedID }: UserListProps) => {
+export const UserList = ({ fetching, users = [], selectionHandler, selectedID }: UserListProps) => {
   return (
     <UserListWrapper data-testid="user-list-wrapper">
       {fetching ? (

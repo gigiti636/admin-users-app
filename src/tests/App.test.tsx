@@ -1,8 +1,8 @@
-import App from '../App/UsersPage.tsx';
-import { describe, it } from 'vitest';
+import App from '../App/index.tsx';
+import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { waitForDelay, getListInfo } from '@/tests/common.tsx';
+import { waitForDelay, getListInfo } from './common';
 import userEventLib from '@testing-library/user-event';
 
 describe('App', () => {
@@ -81,7 +81,7 @@ describe('Form', () => {
 
     const { FirstItem, List } = getListInfo('user-list-wrapper');
 
-    const OriginallistItemTitle = FirstItem.getAttribute('title');
+    const OriginalListItemTitle = FirstItem.getAttribute('title');
     fireEvent.click(FirstItem);
 
     await waitForDelay(200);
@@ -93,7 +93,7 @@ describe('Form', () => {
 
     // @ts-ignore
     const originalValue = inputName.value;
-    expect(originalValue).toBe(OriginallistItemTitle);
+    expect(originalValue).toBe(OriginalListItemTitle);
 
     const other_user = List.querySelector('ul li:nth-child(2)') as HTMLLIElement;
     fireEvent.click(other_user);
